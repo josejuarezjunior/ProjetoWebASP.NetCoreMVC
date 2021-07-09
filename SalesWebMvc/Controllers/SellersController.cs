@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SalesWebMvc.Models;
 using SalesWebMvc.Services;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,19 @@ namespace SalesWebMvc.Controllers
         {
             var list = _sellerService.FindAll();//Função no Model(FindAll)
             return View(list);//Resultado enviado para a View
+        }
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]//Evita ataque malicioso durante autenticação
+        public IActionResult Create(Seller seller)
+        {
+            _sellerService.Insert(seller);
+            //Redirecionando para o Index de vendedores
+            return RedirectToAction(nameof(Index));
         }
     }
 }
